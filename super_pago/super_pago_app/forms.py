@@ -1,6 +1,7 @@
 from datetime import date
 from django.forms import ModelForm
 from django import forms
+from django.shortcuts import get_object_or_404
 
 from .models import Boleta, Transaccion
 
@@ -42,12 +43,19 @@ class FormTransaccion(ModelForm):
     def clean(self):
         cleaned_data = super().clean()
         metodo = cleaned_data.get("metodo")
+        codigo_barra = cleaned_data.get("codigo_barra")
         numero_tarjeta = cleaned_data.get("numero_tarjeta")
 
         if metodo != 'Efectivo':
             if not numero_tarjeta or numero_tarjeta == '':
                 self.add_error("numero_tarjeta",
                                "Ingresar el numero de la tarjeta!")
+        
+        if codigo_barra:
+            boleta = Boleta.objects.filter(codigo_barra=codigo_barra)
+            if not boleta:
+                self.add_error("codigo_barra",
+                                "No existe ninguna boleta con este codigo de barras")
 
 class FiltoFechaForm(forms.Form):
     fecha_desde = forms.DateField(initial=date.today)

@@ -35,11 +35,11 @@ def pagar_boleta(request):
         form = FormTransaccion(request.POST)
         if form.is_valid():
             transaccion = form.save(commit=False)
-            transaccion.save()
             codigo_barra = transaccion.codigo_barra
             boleta = get_object_or_404(Boleta, codigo_barra=codigo_barra)
             boleta.pago = True
             boleta.save()
+            transaccion.save()
             return redirect('detalle_transaccion', pk=transaccion.pk)
     else:
         form = FormTransaccion()
@@ -69,14 +69,19 @@ def listar_pagos(request):
             fecha_desde = form.cleaned_data.get('fecha_desde')
             fecha_hasta = form.cleaned_data.get('fecha_hasta')
 
-            transacciones = Transaccion.objects.filter(fecha_pago__lte=fecha_hasta, fecha_pago__gte=fecha_desde)
+            transacciones = (Transaccion.objects.filter(fecha_pago__lte=fecha_hasta, fecha_pago__gte=fecha_desde)
+                .values('fecha_pago')
+                .annotate(cantidad=Count('fecha_pago'), suma=Sum('importe'))
+                .order_by('fecha_pago')
+            )
             context = { 'form': form, 'transacciones': transacciones }
             return render(request, 'super_pago_app/listar_pagos.html', context )
     else:
         form = FiltoFechaForm()
         transacciones = (Transaccion.objects
-            .annotate(cantidad=Count('fecha_pago'))
-            .annotate(suma=Sum('importe'))
+            .values('fecha_pago')
+            .annotate(cantidad=Count('fecha_pago'), suma=Sum('importe'))
+            .order_by('fecha_pago')
         )
         context = { 'form': form, 'transacciones': transacciones }
         return render(request, 'super_pago_app/listar_pagos.html', context )
