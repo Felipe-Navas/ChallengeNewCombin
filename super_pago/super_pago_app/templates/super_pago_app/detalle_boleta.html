@@ -1,0 +1,24 @@
+{% extends 'super_pago_app/base.html' %}
+{% load static %}
+{% block title %}Creacion de Boleta Exitosa{% endblock %}
+
+{% block navbar %}
+{% include 'super_pago_app/navbar.html' %}
+{% endblock %}
+
+{% block content %}
+<div class="row text-center mt-4">
+    <div class="jumbotron text-xs-center mt-3">
+        <h1 class="display-3">Boleta creada exitosamente!</h1>
+        <h3>El numero de boleta es: #{{ boleta.id }}</h3>
+        <p class="lead">
+            <strong>Revisá tu email,</strong> te enviamos el detalle de la boleta creada.
+        </p>
+        <hr>
+        <p class="lead">
+            <a class="btn btn-primary" href="{% url 'index' %}" role="button"><i class="fas fa-store"></i> Volver al
+                inicio</a>
+        </p>
+    </div>
+</div>
+{% endblock %}

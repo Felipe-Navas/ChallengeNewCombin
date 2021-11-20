@@ -1,0 +1,51 @@
+{% extends 'super_pago_app/base.html' %}
+{% load static %}
+{% block title %}Listar Pagos{% endblock %}
+
+{% block navbar %}
+    {% include 'super_pago_app/navbar.html' %}
+{% endblock %}
+
+<script type="text/javascript"> 
+    var a = "{{ someDjangoVariable }}";
+ </script>
+
+{% block content %}
+    <div class="row justify-content-center mt-4">
+        <div class="shadow card col-10 p-4">
+            <form action="{% url 'listar_pagos' %}" method="post">
+                <legend>Filtro de fecha</legend>
+                {% csrf_token %}
+                {{ form }}
+                <input type="submit" value="Submit">
+            </form>
+        </div>
+    </div>
+    {% if transacciones %}
+        <div class="row text-center mt-4">
+            <h2>Transacciones</h2>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Cantidad de transacciones</th>
+                        <th>Importe Acumulado</th>
+                        <th>Fecha de pago</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for transaccion in transacciones %}
+                        <tr>
+                            <th>{{ transaccion.cantidad }}</th>
+                            <td>{{ transaccion.suma }}</td>
+                            <td>{{ transaccion.fecha_pago }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="row text-center mt-4">
+            <h2>No hay pagos</h2>
+        </div>
+    {% endif %}
+{% endblock %}

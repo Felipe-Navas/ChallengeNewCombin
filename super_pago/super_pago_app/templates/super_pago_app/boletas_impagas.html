@@ -1,0 +1,55 @@
+{% extends 'super_pago_app/base.html' %}
+{% load static %}
+{% block title %}Boleta Impagas{% endblock %}
+
+{% block navbar %}
+    {% include 'super_pago_app/navbar.html' %}
+{% endblock %}
+
+{% block content %}
+    <div class="row justify-content-center mt-4">
+        <div class="shadow card col-10 p-4">
+            <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+                <h1>Filtro</h1>
+                <li><a href="{% url 'boletas_impagas' %}" class="nav-link px-2 link-secondary">Todas</a></li>
+                <li><a href="{% url 'boletas_impagas_filtro' 'Agua' %}" class="nav-link px-2 link-secondary">Agua</a></li>
+                <li><a href="{% url 'boletas_impagas_filtro' 'Gas' %}" class="nav-link px-2 link-secondary">Gas</a></li>
+                <li><a href="{% url 'boletas_impagas_filtro' 'Internet' %}" class="nav-link px-2 link-secondary">Internet</a></li>
+                <li><a href="{% url 'boletas_impagas_filtro' 'Luz' %}" class="nav-link px-2 link-secondary">Luz</a></li>
+            </ul>
+        </div>
+    </div>
+    {% if boletas %}
+        <div class="row text-center mt-4">
+            <h2>Boletas</h2>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Codigo Barra</th>
+                        <th>Tipo</th>
+                        <th>Descripcion</th>
+                        <th>Fecha vto</th>
+                        <th>Importe</th>
+                        <th>Pagada</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for boleta in boletas %}
+                        <tr>
+                            <th>{{ boleta.codigo_barra }}</th>
+                            <td>{{ boleta.tipo }}</td>
+                            <td>{{ boleta.descripcion }}</td>
+                            <td>{{ boleta.fecha_vto }}</td>
+                            <td>{{ boleta.importe }}</td>
+                            <td>{{ boleta.pago }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="row text-center mt-4">
+            <h2>No hay boletas</h2>
+        </div>
+    {% endif %}
+{% endblock %}

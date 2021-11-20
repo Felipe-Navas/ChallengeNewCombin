@@ -1,0 +1,14 @@
+<!-- Navigation-->
+<nav class="navbar navbar-light bg-light fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'index' %}">Super Pago APP</a>
+        <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+            <li><a href="{% url 'index' %}" class="nav-link px-2 link-secondary">Home</a></li>
+            <li><a href="{% url 'crear_boleta' %}" class="nav-link px-2 link-dark">Crear Boleta</a></li>
+            <li><a href="{% url 'pagar_boleta' %}" class="nav-link px-2 link-dark">Pagar Boleta</a></li>
+            <li><a href="{% url 'boletas_impagas' %}" class="nav-link px-2 link-dark">Listar Boletas Impagas</a></li>
+            <li><a href="{% url 'listar_pagos' %}" class="nav-link px-2 link-dark">Listar Pagos</a></li>
+            <li><a href="{% url 'admin:index' %}" class="nav-link px-2 link-dark">Admin</a></li>
+        </ul>
+    </div>
+</nav>
